@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>🎁 Estambul — Días Libres | Itinerario Regalo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    html, body { overflow-x: hidden; }
+/* ════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+════════════════════════════════════════════════════════════ */
+:root {
+  --night:        #060D1F;
+  --navy:         #0E1E3D;
+  --gold:         #C8963E;
+  --gold-pale:    #F2D98A;
+  --teal:         #1D6A7C;
+  --teal-light:   #2A9AB5;
+  --brick:        #C4512F;
+  --cream:        #FAF6EE;
+  --text:         #1A1610;
+  --muted:        #6B5E4C;
+  --border:       #E8DDD0;
+  --free:         #2E7D54;
+  --paid:         #B5451B;
+  --warn:         #8B5A00;
+  --warn-bg:      #FFF8E6;
+  --tag-blue:     #1A3D8F;
+
+  --shadow:       0 2px 12px rgba(6,13,31,.08);
+  --shadow-md:    0 6px 28px rgba(6,13,31,.12);
+  --shadow-hover: 0 10px 40px rgba(6,13,31,.18);
+  --r:    14px;
+  --r-lg: 20px;
+  --r-sm: 8px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESET + BASE
+════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--cream); color: var(--text);
+  line-height: 1.6; overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+button { font-family: inherit; cursor: pointer; }
+
+/* ════════════════════════════════════════════════════════════
+   STAR FIELD  (decorative, pointer-events off)
+════════════════════════════════════════════════════════════ */
+.star-field { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.star { position: absolute; background: #C8963E; border-radius: 50%; animation: twinkle 3s infinite; }
+@keyframes twinkle {
+  0%, 100% { opacity: .25; transform: scale(1); }
+  50%       { opacity: .9;  transform: scale(1.4); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   HERO  —  mobile base
+════════════════════════════════════════════════════════════ */
+.hero {
+  position: relative; z-index: 1;
+  background: linear-gradient(150deg, #060D1F 0%, #0C1F40 45%, #0A1628 100%);
+  min-height: 300px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 52px 20px 60px;
+  overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 110%, rgba(200,150,62,.22) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 35% at 82% 8%,   rgba(29,106,124,.22)  0%, transparent 60%);
+}
+.hero > * { position: relative; z-index: 1; }
+
+.hero-sup {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(200,150,62,.15); border: 1px solid rgba(200,150,62,.35);
+  color: var(--gold-pale); font-size: 10px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 20px; margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(32px, 9vw, 56px);
+  font-weight: 900; color: #fff; line-height: 1.05; margin-bottom: 12px;
+}
+.hero h1 em { color: var(--gold-pale); font-style: normal; }
+.hero-sub {
+  font-size: clamp(13px, 3.8vw, 16px); color: rgba(255,255,255,.72);
+  max-width: 480px; margin: 0 auto 26px; line-height: 1.65;
+}
+.hero-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.hero-pill {
+  background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.18);
+  color: rgba(255,255,255,.88); font-size: 11px; font-weight: 500;
+  padding: 6px 14px; border-radius: 20px; line-height: 1.3;
+}
+.hero-pill strong { color: var(--gold-pale); }
+
+/* ════════════════════════════════════════════════════════════
+   HOTEL ALERT BANNER
+════════════════════════════════════════════════════════════ */
+.alert-hotel {
+  position: relative; z-index: 1;
+  background: linear-gradient(90deg, #0D1B38, #111F42);
+  color: #fff; padding: 14px 20px;
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 13px; line-height: 1.55;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.alert-hotel .icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.alert-hotel strong { color: var(--gold-pale); }
+
+/* ════════════════════════════════════════════════════════════
+   STICKY TAB BAR  —  horizontal scroll on mobile
+════════════════════════════════════════════════════════════ */
+.tabs-wrap {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+}
+.tabs {
+  display: flex; overflow-x: auto;
+  scrollbar-width: none; -ms-overflow-style: none;
+  padding: 0 12px; gap: 2px;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex-shrink: 0;
+  display: flex; flex-direction: column;
+  align-items: flex-start; justify-content: center;
+  padding: 12px 16px 10px;
+  font-size: 11.5px; font-weight: 600;
+  color: var(--muted);
+  border: none; border-bottom: 3px solid transparent;
+  background: none; white-space: nowrap;
+  letter-spacing: .2px; min-height: 52px;
+  transition: color .18s, border-color .18s, background .18s;
+  border-radius: 0;
+}
+.tab:hover  { color: var(--navy); background: rgba(14,30,61,.04); }
+.tab.active { color: var(--navy); border-bottom-color: var(--gold); font-weight: 700; }
+.tab span   { font-size: 9.5px; font-weight: 400; opacity: .6; margin-top: 2px; display: block; }
+
+/* ════════════════════════════════════════════════════════════
+   SECTIONS + CONTAINER
+════════════════════════════════════════════════════════════ */
+.section { padding: 24px 0 52px; display: none; }
+.section.active { display: block; }
+.container { max-width: 100%; margin: 0 auto; padding: 0 16px; }
+
+/* ════════════════════════════════════════════════════════════
+   DAY HEADER CARD
+════════════════════════════════════════════════════════════ */
+.day-header {
+  background: var(--night); color: #fff;
+  border-radius: var(--r); padding: 22px 20px;
+  margin-bottom: 20px; position: relative; overflow: hidden;
+}
+.day-header::after {
+  content: attr(data-emoji);
+  position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  font-size: 52px; opacity: .1; pointer-events: none; user-select: none;
+  line-height: 1;
+}
+.day-date  { font-size: 10px; color: var(--gold-pale); letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-bottom: 6px; }
+.day-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+.day-meta  { font-size: 12.5px; color: rgba(255,255,255,.6); line-height: 1.55; }
+
+.day-header.day10 { background: linear-gradient(135deg, #1B2952, #0C1A38); }
+.day-header.day11 { background: linear-gradient(135deg, #1A3D4A, #0D2632); }
+.day-header.day12 { background: linear-gradient(135deg, #3D1A10, #22120A); }
+
+/* ════════════════════════════════════════════════════════════
+   CLOSED / WARNING ALERT
+════════════════════════════════════════════════════════════ */
+.closed-alert {
+  background: var(--warn-bg); border: 1px solid #F0C060;
+  border-radius: var(--r-sm); padding: 12px 14px;
+  font-size: 12.5px; color: var(--warn); line-height: 1.55;
+  margin-bottom: 18px; display: flex; gap: 8px; align-items: flex-start;
+}
+.closed-alert .icon { flex-shrink: 0; font-size: 15px; margin-top: 2px; }
+
+/* ════════════════════════════════════════════════════════════
+   TIMELINE RAIL
+════════════════════════════════════════════════════════════ */
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before {
+  content: ''; position: absolute; left: 7px; top: 12px; bottom: 12px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--gold), var(--teal-light), var(--brick));
+  border-radius: 2px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STOP CARD  —  mobile-first base
+════════════════════════════════════════════════════════════ */
+.stop {
+  position: relative;
+  background: #fff; border: 1px solid var(--border);
+  border-radius: var(--r); padding: 16px;
+  margin-bottom: 14px; box-shadow: var(--shadow);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.stop::before {
+  content: ''; position: absolute;
+  left: -24px; top: 20px;
+  width: 13px; height: 13px; border-radius: 50%;
+  background: #fff; border: 3px solid var(--gold);
+  box-shadow: 0 0 0 3px rgba(200,150,62,.15);
+}
+.stop.teal::before   { border-color: var(--teal-light); box-shadow: 0 0 0 3px rgba(42,154,181,.15); }
+.stop.brick::before  { border-color: var(--brick);      box-shadow: 0 0 0 3px rgba(196,81,47,.15); }
+.stop.optional       { border-style: dashed; background: #FAFAF8; }
+
+/* stop header row — stack on tiny screens */
+.stop-top {
+  display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px;
+}
+.stop-title {
+  font-family: 'Fraunces', serif; font-size: 15.5px;
+  font-weight: 700; line-height: 1.25; color: var(--text); flex: 1;
+}
+.time-pill {
+  display: inline-flex; align-items: center; align-self: flex-start;
+  background: var(--night); color: var(--gold-pale);
+  font-size: 10px; font-weight: 700; padding: 4px 10px;
+  border-radius: 12px; white-space: nowrap; letter-spacing: .5px;
+  flex-shrink: 0;
+}
+
+.badges { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+.badge {
+  font-size: 10px; font-weight: 700; padding: 3px 9px;
+  border-radius: 12px; letter-spacing: .3px; text-transform: uppercase; line-height: 1.3;
+}
+.badge.free      { background: #D4EDDA; color: var(--free); }
+.badge.paid      { background: #FFE5DA; color: var(--paid); }
+.badge.opt       { background: #EAE0F8; color: #5C2D9C; }
+.badge.transport { background: #DAE8F5; color: var(--tag-blue); }
+.badge.food      { background: #FFF0CC; color: #7A5000; }
+.badge.walk      { background: #E8F4F8; color: var(--teal); }
+.badge.closed    { background: #FFE0E0; color: #8B0000; }
+
+.stop-desc {
+  font-size: 13px; color: #4A3D2E;
+  line-height: 1.65; margin-bottom: 10px;
+}
+
+.tip-box {
+  background: linear-gradient(135deg, #FFF9F0, #FFF5E8);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  padding: 9px 12px; font-size: 12px; color: #6B4A00;
+  line-height: 1.55; margin-bottom: 10px;
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.tip-box .ti { flex-shrink: 0; font-size: 13px; margin-top: 1px; }
+
+/* ════════════════════════════════════════════════════════════
+   MAP / ACTION BUTTONS  —  full-width stack on mobile
+════════════════════════════════════════════════════════════ */
+.map-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  background: var(--navy); color: #fff;
+  font-size: 12px; font-weight: 600; padding: 10px 16px;
+  border-radius: 10px; min-height: 44px; width: 100%;
+  transition: background .18s, transform .12s, box-shadow .18s;
+  box-shadow: 0 2px 8px rgba(14,30,61,.2);
+}
+.map-btn:active { transform: scale(.97); }
+.map-btn:hover  { background: #162E5C; box-shadow: 0 4px 14px rgba(14,30,61,.28); }
+.map-btn.green       { background: #2E7D54; }
+.map-btn.green:hover { background: #245F40; }
+
+.btns-row { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+
+/* ════════════════════════════════════════════════════════════
+   TRANSPORT STRIP
+════════════════════════════════════════════════════════════ */
+.transport-strip {
+  display: flex; align-items: flex-start; gap: 8px;
+  background: #EEF4FB; border-radius: var(--r-sm);
+  padding: 10px 12px; margin-bottom: 14px;
+  font-size: 12.5px; color: var(--tag-blue); font-weight: 500; line-height: 1.5;
+  border-left: 3px solid var(--teal-light);
+}
+
+/* ════════════════════════════════════════════════════════════
+   OPTION TOGGLE  (Día 12)
+════════════════════════════════════════════════════════════ */
+.option-toggle {
+  display: flex; background: #F0EBE0;
+  border-radius: 12px; padding: 4px; margin-bottom: 20px; gap: 4px;
+}
+.opt-btn {
+  flex: 1; padding: 11px 8px; border-radius: 9px;
+  font-size: 11.5px; font-weight: 600; text-align: center;
+  cursor: pointer; transition: all .2s; color: var(--muted);
+  border: none; background: none; line-height: 1.4; min-height: 44px;
+}
+.opt-btn.active { background: #fff; color: var(--navy); box-shadow: var(--shadow); }
+.option-content         { display: none; }
+.option-content.active  { display: block; }
+
+/* ════════════════════════════════════════════════════════════
+   COST SUMMARY TABLE
+════════════════════════════════════════════════════════════ */
+.cost-section {
+  background: var(--night); border-radius: var(--r);
+  padding: 18px 20px; margin-top: 10px;
+}
+.cost-section h3 {
+  font-family: 'Fraunces', serif; font-size: 15px; color: var(--gold-pale);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.cost-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,.07);
+  font-size: 12.5px; color: rgba(255,255,255,.78); gap: 12px; flex-wrap: wrap;
+}
+.cost-row span:last-child { flex-shrink: 0; text-align: right; }
+.cost-row:last-child { border-bottom: none; font-weight: 700; color: #fff; padding-top: 12px; }
+.cost-row:last-child span:last-child { color: var(--gold-pale); }
+.price-free { color: #6DD89A; font-weight: 700; }
+.price-paid { color: #FFB088; font-weight: 600; }
+
+/* ════════════════════════════════════════════════════════════
+   ISLANDS SECTION
+════════════════════════════════════════════════════════════ */
+.islands-hero {
+  background: linear-gradient(160deg, #093D5E, #0A2038, #041525);
+  border-radius: var(--r); padding: 20px; margin-bottom: 16px; color: #fff;
+  position: relative; overflow: hidden;
+}
+.islands-hero::after {
+  content: '⛴️'; position: absolute; right: 16px; bottom: -8px;
+  font-size: 64px; opacity: .13; pointer-events: none; user-select: none;
+}
+.islands-hero h3 { font-family: 'Fraunces', serif; font-size: 18px; margin-bottom: 6px; }
+.islands-hero p  { font-size: 13px; color: rgba(255,255,255,.72); line-height: 1.55; }
+
+.ferry-info {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-top: 14px;
+}
+.ferry-stat { background: rgba(255,255,255,.09); border-radius: 8px; padding: 10px; text-align: center; }
+.ferry-stat .val { font-family: 'Fraunces', serif; font-size: 17px; color: var(--gold-pale); font-weight: 700; }
+.ferry-stat .lbl { font-size: 9.5px; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+.activity-list { display: flex; flex-direction: column; gap: 10px; margin: 14px 0; }
+.activity {
+  background: #fff; border-radius: var(--r-sm);
+  border: 1px solid var(--border); padding: 12px 14px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.activity .emoji { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+.activity h4     { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.activity p      { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.activity .price-tag { font-size: 11px; font-weight: 700; margin-top: 4px; }
+.price-tag.free { color: var(--free); }
+.price-tag.paid { color: var(--paid); }
+
+/* ════════════════════════════════════════════════════════════
+   TIPS GRID  —  1 col on mobile
+════════════════════════════════════════════════════════════ */
+.tips-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 16px; }
+.tip-card {
+  background: #fff; border-radius: var(--r-sm);
+  border: 1px solid var(--border); border-top: 3px solid var(--gold);
+  padding: 14px;
+}
+.tip-card h4 { font-size: 12.5px; font-weight: 700; color: var(--navy); margin-bottom: 5px; }
+.tip-card p  { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+/* ════════════════════════════════════════════════════════════
+   FAREWELL + FOOTER
+════════════════════════════════════════════════════════════ */
+.farewell {
+  background: linear-gradient(135deg, #C8963E, #8B5E20);
+  color: #fff; border-radius: var(--r);
+  padding: 24px; text-align: center; margin-top: 24px;
+}
+.farewell h2 { font-family: 'Fraunces', serif; font-size: 20px; margin-bottom: 8px; }
+.farewell p  { font-size: 13px; opacity: .92; line-height: 1.65; max-width: 460px; margin: 0 auto; }
+
+.footer {
+  background: var(--night); color: rgba(255,255,255,.45);
+  text-align: center; padding: 22px 20px; font-size: 11px; line-height: 1.75;
+}
+.footer strong { color: var(--gold-pale); }
+
+/* ════════════════════════════════════════════════════════════
+   UTILITY
+════════════════════════════════════════════════════════════ */
+.s-divider { height: 1px; background: var(--border); margin: 22px 0; }
+
+/* ════════════════════════════════════════════════════════════
+   BREAKPOINT ① — LARGE MOBILE  480 px
+   Stop header goes side-by-side; buttons inline
+════════════════════════════════════════════════════════════ */
+@media (min-width: 480px) {
+  /* stop header: title + time pill side-by-side */
+  .stop-top { flex-direction: row; align-items: flex-start; gap: 10px; }
+  .time-pill { margin-top: 3px; }
+
+  /* buttons: inline, wrapping */
+  .map-btn   { width: auto; min-width: 140px; }
+  .btns-row  { flex-direction: row; flex-wrap: wrap; }
+
+  /* tips: 2 cols */
+  .tips-grid { grid-template-columns: 1fr 1fr; }
+
+  /* tabs slightly bigger */
+  .tab { font-size: 12px; padding: 13px 18px 11px; }
+  .tab span { font-size: 10px; }
+
+  /* hero pills a bit larger */
+  .hero-pill { font-size: 12px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   BREAKPOINT ② — TABLET  768 px
+   Centered container, 3-col grids, bigger type
+════════════════════════════════════════════════════════════ */
+@media (min-width: 768px) {
+  /* container */
+  .container { max-width: 700px; padding: 0 28px; }
+
+  /* hero */
+  .hero       { min-height: 400px; padding: 76px 48px 84px; }
+  .hero-sup   { font-size: 11px; padding: 6px 18px; margin-bottom: 22px; }
+  .hero-sub   { font-size: 16px; max-width: 500px; }
+  .hero-pill  { font-size: 12.5px; padding: 7px 16px; }
+
+  /* hotel alert */
+  .alert-hotel { padding: 16px 32px; font-size: 13.5px; }
+
+  /* tabs: center, no overflow scroll */
+  .tabs { padding: 0 20px; justify-content: center; overflow-x: visible; }
+  .tab  { padding: 15px 22px 13px; font-size: 12.5px; flex-shrink: 1; }
+  .tab span { font-size: 10.5px; }
+
+  /* sections */
+  .section { padding: 32px 0 60px; }
+
+  /* day header */
+  .day-header       { padding: 28px 32px; }
+  .day-header::after { font-size: 68px; right: 24px; }
+  .day-date  { font-size: 10.5px; letter-spacing: 2.5px; }
+  .day-title { font-size: 26px; margin-bottom: 10px; }
+  .day-meta  { font-size: 13.5px; }
+
+  /* timeline & stops */
+  .timeline        { padding-left: 32px; }
+  .timeline::before { left: 8px; width: 2.5px; top: 14px; bottom: 14px; }
+  .stop            { padding: 20px 22px; margin-bottom: 16px; }
+  .stop::before    { left: -27px; width: 14px; height: 14px; top: 22px; }
+  .stop-title      { font-size: 17.5px; }
+  .stop-desc       { font-size: 13.5px; }
+  .tip-box         { font-size: 12.5px; padding: 10px 14px; }
+
+  /* buttons */
+  .map-btn { min-height: 42px; padding: 10px 18px; font-size: 12.5px; }
+  .btns-row { gap: 8px; }
+
+  /* grids */
+  .tips-grid   { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .ferry-info  { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .activity-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* islands */
+  .islands-hero { padding: 28px; }
+  .islands-hero h3 { font-size: 20px; }
+  .islands-hero p  { font-size: 13.5px; }
+  .ferry-stat .val { font-size: 19px; }
+
+  /* cost */
+  .cost-section    { padding: 22px 26px; }
+  .cost-section h3 { font-size: 16px; }
+  .cost-row        { font-size: 13px; }
+
+  /* option toggle */
+  .opt-btn { font-size: 13px; padding: 12px 16px; }
+
+  /* transport strip */
+  .transport-strip { font-size: 13px; padding: 11px 14px; }
+
+  /* closed alert */
+  .closed-alert { font-size: 13px; padding: 14px 16px; }
+
+  /* farewell */
+  .farewell    { padding: 32px; }
+  .farewell h2 { font-size: 24px; }
+  .farewell p  { font-size: 14px; }
+
+  /* footer */
+  .footer { font-size: 12px; padding: 24px 32px; }
+
+  /* tip cards */
+  .tip-card h4 { font-size: 13px; }
+  .tip-card p  { font-size: 12.5px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   BREAKPOINT ③ — LAPTOP / SMALL DESKTOP  1024 px
+   Wide container, hover animations, bigger heading scale
+════════════════════════════════════════════════════════════ */
+@media (min-width: 1024px) {
+  /* container */
+  .container { max-width: 880px; padding: 0 40px; }
+
+  /* hero */
+  .hero     { min-height: 460px; padding: 88px 64px 96px; }
+  .hero h1  { font-size: 60px; }
+  .hero-sub { font-size: 17px; max-width: 540px; margin-bottom: 32px; }
+  .hero-sup { font-size: 11.5px; letter-spacing: 3px; margin-bottom: 28px; }
+  .hero-pill { font-size: 13px; padding: 8px 18px; }
+  .hero-pills { gap: 10px; }
+
+  /* alert */
+  .alert-hotel { padding: 18px 56px; font-size: 14px; }
+
+  /* tabs bar */
+  .tabs { padding: 0 40px; max-width: 1020px; margin: 0 auto; }
+  .tab  { padding: 17px 26px 15px; font-size: 13px; }
+  .tab span { font-size: 11px; }
+
+  /* sections */
+  .section { padding: 40px 0 72px; }
+
+  /* day header */
+  .day-header       { padding: 32px 40px; }
+  .day-header::after { font-size: 86px; right: 36px; }
+  .day-date  { font-size: 11px; letter-spacing: 3px; margin-bottom: 8px; }
+  .day-title { font-size: 30px; margin-bottom: 12px; }
+  .day-meta  { font-size: 14px; max-width: 580px; }
+
+  /* timeline */
+  .timeline        { padding-left: 36px; }
+  .timeline::before { left: 9px; top: 16px; bottom: 16px; }
+  .stop            { padding: 24px 28px; margin-bottom: 18px; }
+  .stop::before    { left: -30px; width: 15px; height: 15px; top: 24px; }
+
+  /* hover lift on desktop */
+  .stop:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* typography */
+  .stop-title  { font-size: 19px; }
+  .stop-desc   { font-size: 14px; line-height: 1.7; }
+  .tip-box     { font-size: 13px; padding: 12px 16px; }
+  .closed-alert { font-size: 13.5px; padding: 14px 18px; }
+  .transport-strip { font-size: 13.5px; padding: 12px 16px; }
+
+  /* buttons */
+  .map-btn  { min-height: 44px; padding: 11px 22px; font-size: 13px; }
+  .btns-row { gap: 10px; }
+
+  /* cost */
+  .cost-section    { padding: 28px 32px; }
+  .cost-section h3 { font-size: 17px; margin-bottom: 16px; }
+  .cost-row        { font-size: 13.5px; padding: 10px 0; }
+
+  /* activities */
+  .activity      { padding: 14px 16px; }
+  .activity h4   { font-size: 13.5px; }
+  .activity p    { font-size: 12.5px; }
+
+  /* tip cards */
+  .tip-card    { padding: 16px; }
+  .tip-card h4 { font-size: 13px; }
+  .tip-card p  { font-size: 12.5px; }
+
+  /* islands */
+  .islands-hero    { padding: 32px; }
+  .islands-hero h3 { font-size: 22px; }
+  .islands-hero p  { font-size: 14px; }
+  .ferry-stat .val { font-size: 20px; }
+  .ferry-stat .lbl { font-size: 10px; }
+
+  /* farewell */
+  .farewell    { padding: 40px; margin-top: 32px; }
+  .farewell h2 { font-size: 26px; }
+  .farewell p  { font-size: 15px; }
+
+  /* option toggle */
+  .opt-btn { font-size: 13.5px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   BREAKPOINT ④ — FULL DESKTOP  1280 px
+   Max container width; vertical sidebar nav via CSS Grid
+════════════════════════════════════════════════════════════ */
+@media (min-width: 1280px) {
+  /* ── Layout: sidebar grid ── */
+  body {
+    display: grid;
+    grid-template-columns: 236px 1fr;
+    grid-template-rows: auto auto auto 1fr auto;
+    min-height: 100vh;
+  }
+  /* Full-bleed rows */
+  .star-field  { grid-column: 1 / -1; grid-row: 1; }
+  .hero        { grid-column: 1 / -1; grid-row: 1; }
+  .alert-hotel { grid-column: 1 / -1; grid-row: 2; }
+  .footer      { grid-column: 1 / -1; grid-row: 5; }
+
+  /* Sidebar navigation */
+  .tabs-wrap {
+    grid-column: 1; grid-row: 3 / 5;
+    position: sticky; top: 0; height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    border-bottom: none;
+    box-shadow: 2px 0 14px rgba(0,0,0,.07);
+    background: #FDFAF5;
+    z-index: 100;
+  }
+  .tabs {
+    flex-direction: column;
+    overflow-x: visible; overflow-y: visible;
+    padding: 28px 12px; gap: 4px;
+    justify-content: flex-start;
+  }
+  .tab {
+    width: 100%; flex-shrink: 0;
+    border-bottom: none;
+    border-left: 3px solid transparent;
+    text-align: left; white-space: normal;
+    padding: 14px 20px; border-radius: 10px;
+    font-size: 13px; min-height: 56px;
+    align-items: flex-start;
+  }
+  .tab:hover  { background: rgba(14,30,61,.05); }
+  .tab.active {
+    border-left-color: var(--gold);
+    border-bottom: none;
+    background: rgba(200,150,62,.07);
+    color: var(--navy);
+  }
+  .tab span { font-size: 10.5px; opacity: .65; }
+
+  /* Sidebar logo area */
+  .tabs-wrap::before {
+    content: '🕌 Estambul';
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-size: 15px; font-weight: 700;
+    color: var(--navy);
+    padding: 24px 24px 0;
+    letter-spacing: .3px;
+  }
+
+  /* Content column */
+  .section {
+    grid-column: 2; grid-row: 3 / 5;
+    padding: 40px 0 80px;
+  }
+
+  /* Container inside content column */
+  .container { max-width: 860px; padding: 0 48px; }
+
+  /* ── Typography / spacing upgrades ── */
+  .hero     { min-height: 500px; }
+  .hero h1  { font-size: 68px; }
+  .hero-sub { font-size: 18px; max-width: 560px; }
+
+  .alert-hotel { padding: 18px 72px; font-size: 14.5px; }
+
+  .day-header        { padding: 36px 48px; }
+  .day-header::after { font-size: 96px; right: 44px; }
+  .day-title         { font-size: 33px; }
+
+  .stop        { padding: 28px 32px; }
+  .stop-title  { font-size: 20px; }
+  .stop-desc   { font-size: 14.5px; }
+
+  .cost-section    { padding: 30px 36px; }
+  .cost-section h3 { font-size: 18px; }
+  .cost-row        { font-size: 14px; }
+
+  .tip-card h4 { font-size: 13.5px; }
+  .tip-card p  { font-size: 13px; }
+
+  .farewell    { padding: 48px; }
+  .farewell h2 { font-size: 28px; }
+  .farewell p  { font-size: 16px; }
+
+  .footer { font-size: 12.5px; padding: 28px 48px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   BREAKPOINT ⑤ — WIDE DESKTOP  1600 px
+   Slightly larger container within sidebar layout
+════════════════════════════════════════════════════════════ */
+@media (min-width: 1600px) {
+  body { grid-template-columns: 260px 1fr; }
+  .container { max-width: 960px; padding: 0 60px; }
+  .hero h1   { font-size: 76px; }
+  .day-title { font-size: 36px; }
+  .stop-title { font-size: 21px; }
+}
+</style>
+</head>
+<body>
+
+<!-- STAR FIELD JS -->
+<div class="star-field" id="stars"></div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<div class="hero">
+  <div class="hero-sup">🎁 Regalo de Viaje · Akira Travel</div>
+  <h1>Estambul<br><em>Días Libres</em></h1>
+  <p class="hero-sub">Tu guía personal para los días sin itinerario fijo. Lugares únicos, no repetidos. Diseñada con amor para tu aventura.</p>
+  <div class="hero-pills">
+    <div class="hero-pill">📅 21–23 Junio 2026</div>
+    <div class="hero-pill">🏨 Ramada Old City</div>
+    <div class="hero-pill"><strong>0</strong> destinos repetidos</div>
+    <div class="hero-pill">📱 Mobile-Ready</div>
+  </div>
+</div>
+
+<!-- HOTEL ALERT -->
+<div class="alert-hotel">
+  <div class="icon">🏨</div>
+  <div>
+    Tu hotel en estos días: <strong>Ramada by Wyndham Istanbul Old City</strong> — Turgut Özal Millet Cd. No:82, Fatih.
+    Accede a todo tomando el <strong>tranvía T1</strong> desde la parada cercana en Aksaray o Laleli hacia el este.
+    Vuelo de regreso: <strong>24 Jun · TK 800 · 09:40 AM</strong> → Llegada al aeropuerto ~7:30 AM.
+  </div>
+</div>
+
+<!-- ══════════════ TABS ══════════════ -->
+<div class="tabs-wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab active" onclick="showTab('d10')" role="tab">
+      🌇 Día 10 Tarde
+      <span>Sáb 21 Jun</span>
+    </button>
+    <button class="tab" onclick="showTab('d11')" role="tab">
+      🌊 Día 11
+      <span>Dom 22 Jun</span>
+    </button>
+    <button class="tab" onclick="showTab('d12')" role="tab">
+      👑 Día 12
+      <span>Lun 23 Jun · Último</span>
+    </button>
+    <button class="tab" onclick="showTab('tips')" role="tab">
+      💡 Tips
+      <span>Esenciales</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     DÍA 10 TARDE
+══════════════════════════════════════ -->
+<section class="section active" id="d10">
+<div class="container">
+
+  <div class="day-header day10" data-emoji="🏛️">
+    <div class="day-date">Sábado 21 Junio · Tour de mañana incluido → Tarde libre ~2:00 PM</div>
+    <div class="day-title">El Palacio Subterráneo<br>& las Joyas Ocultas</div>
+    <div class="day-meta">Después de regresar del tour organizado (murallas, Yeni Cami, Beyoglu), la tarde es tuya. A 10 min en tranvía está algo mágico.</div>
+  </div>
+
+  <div class="closed-alert">
+    <div class="icon">⚠️</div>
+    <div><strong>Recuerda:</strong> Dolmabahçe Palace CIERRA los lunes → visítalo el domingo (Día 11). Hoy sábado hay muchas opciones disponibles. El espectáculo de Derviches se recomienda reservar con antelación.</div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- PARADA 1: CISTERNA -->
+    <div class="stop">
+      <div class="stop-top">
+        <div class="stop-title">✨ Cisterna Basílica <em>— El Palacio Sumergido</em></div>
+        <div class="time-pill">2:30 PM · 45 min</div>
+      </div>
+      <div class="badges">
+        <span class="badge paid">1.950 TRY (~€38)</span>
+        <span class="badge walk">🚶 5 min de la parada Sultanahmet</span>
+      </div>
+      <p class="stop-desc">El secreto mejor guardado de Estambul: una cisterna subterránea del siglo VI con <strong>336 columnas de mármol</strong> que sostienen una cámara abovedada inundada. La iluminación mística, las cabezas de Medusa del s. IV invertidas en la base de dos columnas, y el silencio del agua crean un ambiente que no tiene parangón en el mundo. Es el set de las películas <em>Inferno</em> y <em>From Russia With Love</em>.</p>
+      <div class="tip-box">
+        <div class="ti">💡</div>
+        <div>Compra el ticket online con antelación en <strong>yerebatan.com</strong> para evitar colas de hasta 2 horas. La opción <em>Night Shift</em> (19:30-22:00) a 3.000 TRY es aún más atmosférica si quieren volver de noche.</div>
+      </div>
+      <div class="btns-row">
+        <a class="map-btn" href="https://maps.google.com/?cid=6971624870583829617" target="_blank">📍 Ver en Maps</a>
+        <a class="map-btn green" href="https://yerebatan.com" target="_blank">🎫 Tickets Online</a>
+      </div>
+    </div>
+
+    <!-- TRAYECTO -->
+    <div class="transport-strip">🚶 5 min caminando hacia el sur · Detrás de la Mezquita Azul</div>
+
+    <!-- PARADA 2: ARASTA -->
+    <div class="stop teal">
+      <div class="stop-top">
+        <div class="stop-title">🛍️ Bazar de Arasta <em>— El Bazar de los Artesanos</em></div>
+        <div class="time-pill">3:20 PM · 60 min</div>
+      </div>
+      <div class="badges">
+        <span class="badge free">GRATIS Entrar</span>
+        <span class="badge walk">Junto a la Mezquita Azul</span>
+      </div>
+      <p class="stop-desc">El bazar más exclusivo y auténtico de Estambul, prácticamente desconocido por el turismo masivo. 40 tiendas especializadas en cerámica İznik genuina, tejidos de seda, tapices bereberes, joyería otomana y artesanía de cuero de calidad superior. Mucho más calmado que el Gran Bazar y con artículos auténticos. Es donde compran los conocedores.</p>
+      <div class="tip-box">
+        <div class="ti">🎁</div>
+        <div>Los mejores souvenirs de todo el viaje están aquí: cerámica pintada a mano (~200-800 TRY), lámparas mosaico (~300-1.200 TRY), pañuelos de seda (~150-400 TRY). Los vendedores invitan a té sin presionar a comprar.</div>
+      </div>
+      <div class="btns-row">
+        <a class="map-btn" href="https://maps.google.com/?cid=15667877672909666424" target="_blank">📍 Ver en Maps</a>
+        <a class="map-btn" href="https://www.google.com/maps/dir/Basilica+Cistern+Istanbul/Arasta+Bazaar+Istanbul" target="_blank">🗺️ Ruta Cisterna→Arasta</a>
+      </div>
+    </div>
+
+    <!-- PARADA 3: CENA + ROOFTOP -->
+    <div class="stop">
+      <div class="stop-top">
+        <div class="stop-title">🌅 Cena con Vistas al Bósforo</div>
+        <div class="time-pill">5:00 PM · Tarde</div>
+      </div>
+      <div class="badges">
+        <span class="badge food">Cena ~300-600 TRY/persona</span>
+      </div>
+      <p class="stop-desc">Los restaurantes de azotea en Sultanahmet ofrecen vistas directas a la Mezquita Azul y Santa Sofía mientras el sol se pone sobre el Bósforo. Esta es la hora dorada para las fotos. Algunas opciones: <strong>Terrace Restaurant at Hotel Arcadia Blue</strong> (vistas icónicas), <strong>Sera Restaurant</strong> o simplemente los múltiples cafés con terraza alrededor de la Plaza Sultanahmet.</p>
+      <div class="tip-box">
+        <div class="ti">📸</div>
+        <div>Hora dorada (sunset Sultanahmet) ≈ 20:30 en junio. La silueta de las cúpulas con el cielo naranja-rosa es uno de los espectáculos más bellos de Estambul. Vale quedarse hasta ver encenderse las luces.</div>
+      </div>
+    </div>
+
+    <!-- PARADA 4: OPTIONAL DERVISHES -->
+    <div class="stop optional brick">
+      <div class="stop-top">
+        <div class="stop-title">🌀 OPCIONAL: Derviches Giróvagos · Hodjapasha</div>
+        <div class="time-pill">7:00 PM · 70 min</div>
+      </div>
+      <div class="badges">
+        <span class="badge opt">OPCIONAL</span>
+        <span class="badge paid">~€41 (~1.700 TRY)</span>
+      </div>
+      <p class="stop-desc">El espectáculo más místico de Estambul: la <em>Sema</em>, danza sagrada de los derviches Mevleví en un hammam del siglo XV. Los bailarines giran continuamente durante una hora en un rito sufí que simboliza el viaje espiritual del alma. Es el show que recomienda el propio itinerario de Akira Travel para la última noche. <strong>El mismo local que menciona el PDF como "Estambul de Noche".</strong></p>
+      <div class="tip-box">
+        <div class="ti">🎟️</div>
+        <div>Reserva online en <strong>hodjapasha.com</strong>. Shows a las 19:00 todos los días. Llega 30 min antes. El local es un hammam circular del s. XV — la ambientación ya es espectacular antes de empezar.</div>
+      </div>
+      <div class="btns-row">
+        <a class="map-btn" href="https://maps.google.com/?cid=17292295133982162577" target="_blank">📍 Ver en Maps</a>
+        <a class="map-btn green" href="https://www.hodjapasha.com" target="_blank">🎫 Reservar Ahora</a>
+      </div>
+    </div>
+
+  </div><!-- /timeline -->
+
+  <div class="cost-section">
+    <h3>💰 Presupuesto Día 10 Tarde</h3>
+    <div class="cost-row"><span>Cisterna Basílica (x2 personas)</span><span class="price-paid">~3.900 TRY / ~€76</span></div>
+    <div class="cost-row"><span>Arasta Bazaar (entrada)</span><span class="price-free">GRATIS</span></div>
+    <div class="cost-row"><span>Cena con vistas (x2)</span><span class="price-paid">~600-1.200 TRY</span></div>
+    <div class="cost-row"><span>Derviches OPCIONAL (x2)</span><span class="price-paid">~3.400 TRY / ~€82</span></div>
+    <div class="cost-row"><span>Tranvía T1 x2 viajes</span><span class="price-paid">~80 TRY</span></div>
+    <div class="cost-row"><span><strong>TOTAL SIN OPCIONAL</strong></span><span>~4.580 TRY / ~€88</span></div>
+  </div>
+
+</div>
+</section>
+
+<!-- ══════════════════════════════════════
+     DÍA 11 — DOMINGO
+══════════════════════════════════════ -->
+<section class="section" id="d11">
+<div class="container">
+
+  <div class="day-header day11" data-emoji="🌊">
+    <div class="day-date">Domingo 22 Junio · Día libre completo</div>
+    <div class="day-title">Palacios del Bósforo<br>& la Foto Más Icónica</div>
+    <div class="day-meta">El palacio más lujoso de Oriente Medio + el puente más famoso del mundo + arte contemporáneo frente al Bósforo. Un día de ensueño.</div>
+  </div>
+
+  <div class="closed-alert">
+    <div class="icon">⚠️</div>
+    <div><strong>¡Crítico!</strong> Dolmabahçe Palace <strong>CIERRA los lunes</strong>. Hoy domingo es el único día para visitarlo. <br>Istanbul Modern también cierra lunes → visítalo hoy tarde si pueden. ✅ Ambos abiertos hoy.</div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- TRANSPORTE A DOLMABAHCE -->
+    <div class="transport-strip">🚃 Desde el hotel: Tram T1 (hacia Kabataş) → bajarse en parada <strong>Kabataş</strong> (~15-20 min) → caminar 10 min al norte por la orilla hasta Dolmabahçe.</div>
+
+    <!-- DOLMABAHCE -->
+    <div class="stop">
+      <div class="stop-top">
+        <div class="stop-title">🏰 Palacio de Dolmabahçe <em>— El Versalles del Bósforo</em></div>
+        <div class="time-pill">9:00 AM · 2.5-3 hrs</div>
+      </div>
+      <div class="badges">
+        <span class="badge paid">2.000 TRY (~€40)</span>
+        <span class="badge closed">CIERRA LUNES ⛔</span>
+        <span class="badge walk">10 min de Kabataş</span>
+      </div>
+      <p class="stop-desc">El palacio más opulento del Imperio Otomano, construido en 1856 en la orilla europea del Bósforo. Atatürk vivió sus últimos días aquí y todos los relojes del palacio fueron parados a las 9:05 AM, hora de su muerte. Los datos son abrumadores: <strong>285 habitaciones</strong>, 46 salones, 6 hammams, 2 baños imperiales de alabastro y la <strong>lámpara de araña de Bohemia más grande del mundo</strong> (4.5 toneladas, 750 bombillas). El techo del Gran Salón es de 36 metros de altura y el piso es de parqué de 8 maderas distintas. Un lujo que hace que Versalles parezca modesto.</p>
+      <div class="tip-box">
+        <div class="ti">💡</div>
+        <div>Llega a las 9:00 AM exactas para evitar colas masivas. La visita incluye Selamlık (zona oficial), Harem (zona privada) y Museo de Pintura. Lleva audífonos: el audio guía es gratis y está incluido. <strong>Ticket: millisaraylar.gov.tr</strong></div>
+      </div>
+      <div class="btns-row">
+        <a class="map-btn" href="https://maps.google.com/?cid=15912130322145968907" target="_blank">📍 Dolmabahçe Palace</a>
+        <a class="map-btn green" href="https://www.millisaraylar.gov.tr" target="_blank">🎫 Tickets Oficiales</a>
+      </div>
+    </div>
+
+    <!-- TRANSPORT TO BESIKTAS -->
+    <div class="transport-strip">🚶 Caminata costera de 15 min hacia el norte → Beşiktaş</div>
+
+    <!-- BESIKTAS -->
+    <div class="stop teal">
+      <div class="stop-top">
+        <div class="stop-title">🐟 Beşiktaş <em>— Almuerzo Local</em></div>
+        <div class="time-pill">12:00 PM · 60-75 min</div>
+      </div>
+      <div class="badges">
+        <span class="badge food">Almuerzo ~200-450 TRY/persona</span>
+        <span class="badge free">Exploración Gratis</span>
+      </div>
+      <p class="stop-desc">El barrio más auténtico y liviano de la orilla europea. Lejos del turismo masivo, Beşiktaş es donde los istanbulitas reales comen, compran y viven. El mercado de pescado cubierto (Balık Pazarı) tiene puestos de comida excepcionales. Prueba el <strong>midye dolma</strong> (mejillones rellenos de arroz ~10 TRY c/u), el <strong>kokoreç</strong> (intestinos especiados — aventúrate) o simplemente un kebab de calidad real a precios locales.</p>
+      <div class="btns-row">
+        <a class="map-btn" href="https://www.google.com/maps/search/restaurantes+besiktas+istanbul/@41.041,29.004,16z" target="_blank">📍 Restaurantes Beşiktaş</a>
+      </div>
+    </div>
+
+    <!-- TRANSPORT TO ORTAKOY -->
+    <div class="transport-strip">🚌 Bus 22 o 25D desde Beşiktaş a Ortaköy (~10 min, ~20 TRY) o caminata costera de 25 min (muy bonita)</div>
+
+    <!-- ORTAKOY -->
+    <div class="stop">
+      <div class="stop-top">
+        <div class="stop-title">📸 Mezquita de Ortaköy <em>— La Foto Perfecta</em></div>
+        <div class="time-pill">2:00 PM · 90 min</div>
+      </div>
+      <div class="badges">
+        <span class="badge free">GRATIS</span>
+        <span class="badge food">🥔 Kumpir Ortaköy ~100-200 TRY</span>
+      </div>
+      <p class="stop-desc">La imagen más reconocida de Estambul en Instagram: la delicada mezquita neobárroca de 1854 con sus dos minaretes esbeltos, enmarcada bajo el arco masivo del Primer Puente del Bósforo. La plaza alrededor es el epicentro del street food de calidad: el <strong>kumpir</strong> (papa gigante horneada rellena de todo lo que quieras) es la especialidad legendaria del barrio. Hay fila, pero vale la pena. La zona también tiene cafés con vistas al puente perfectas para una foto matinal.</p>
+      <div class="tip-box">
+        <div class="ti">📸</div>
+        <div>La mejor foto: ponte frente a la mezquita con el puente al fondo, a la hora del té (3-4 PM) cuando la luz lateral hace brillar los minaretes. Con zoom desde el paseo marítimo también sale espectacular la combinación mezquita+puente+agua.</div>
+      </div>
+      <div class="btns-row">
+        <a class="map-btn" href="https://maps.google.com/?cid=18263207694178437308" target="_blank">📍 Mezquita Ortaköy</a>
+        <a class="map-btn" href="https://www.google.com/maps/dir/Besiktas+Istanbul/Ortakoy+Istanbul" target="_blank">🗺️ Ruta Beşiktaş→Ortaköy</a>
+      </div>
+    </div>
+
+    <!-- TRANSPORT TO ISTANBUL MODERN -->
+    <div class="transport-strip">🚌 Bus o taxi desde Ortaköy hasta Karaköy/Tophane (~20 min en bus o ~100-150 TRY en taxi). Istanbul Modern está en Galataport.</div>
+
+    <!-- ISTANBUL MODERN -->
+    <div class="stop teal">
+      <div class="stop-top">
+        <div class="stop-title">🎨 Istanbul Modern <em>— Arte + Bósforo</em></div>
+        <div class="time-pill">4:30 PM · 90 min</div>
+      </div>
+      <div class="badges">
+        <span class="badge paid">~€12-15 (~500-650 TRY)</span>
+        <span class="badge closed">CIERRA LUNES ⛔ · Hoy abierto ✅</span>
+        <span class="badge walk">En Galataport, junto al Bósforo</span>
+      </div>
+      <p class="stop-desc">El museo de arte contemporáneo de Turquía, rediseñado por el arquitecto Renzo Piano y reabierto en 2023 en Galataport. Tres pisos de arte turco moderno, con una terraza en la azotea con vistas panorámicas al Bósforo que es literalmente la más bonita de la ciudad. La colección permanente traza el arte turco desde el s. XX hasta hoy, con piezas sorprendentes. El café en la planta baja es de los mejores de Estambul.</p>
+      <div class="tip-box">
+        <div class="ti">🌅</div>
+        <div>Cierra a las 6:00 PM los domingos. Llega antes de las 5:00 PM para tener tiempo y no perderte la terraza. La luz de la tarde sobre el Bósforo desde el rooftop es mágica — es la foto que nadie espera encontrar en un museo.</div>
+      </div>
+      <div class="btns-row">
+        <a class="map-btn" href="https://maps.google.com/?cid=4300454337577019549" target="_blank">📍 Istanbul Modern</a>
+        <a class="map-btn green" href="https://www.istanbulmodern.org" target="_blank">🎫 Ver Info + Tickets</a>
+      </div>
+    </div>
+
+    <!-- REGRESO -->
+    <div class="transport-strip">🚃 Regreso: Tranvía T1 desde parada <strong>Tophane</strong> o <strong>Karaköy</strong> en dirección oeste → bajar en Aksaray o Laleli para el hotel (~20 min)</div>
+
+  </div>
+
+  <div class="cost-section">
+    <h3>💰 Presupuesto Día 11</h3>
+    <div class="cost-row"><span>Palacio Dolmabahçe (x2)</span><span class="price-paid">4.000 TRY / ~€80</span></div>
+    <div class="cost-row"><span>Almuerzo Beşiktaş (x2)</span><span class="price-paid">~400-900 TRY</span></div>
+    <div class="cost-row"><span>Kumpir Ortaköy (x2)</span><span class="price-paid">~200-400 TRY</span></div>
+    <div class="cost-row"><span>Istanbul Modern (x2)</span><span class="price-paid">~1.000-1.300 TRY</span></div>
+    <div class="cost-row"><span>Transporte (buses + taxi)</span><span class="price-paid">~300-500 TRY</span></div>
+    <div class="cost-row"><span><strong>TOTAL ESTIMADO</strong></span><span>~5.900-7.100 TRY / <strong>~€115-140</strong></span></div>
+  </div>
+
+</div>
+</section>
+
+<!-- ══════════════════════════════════════
+     DÍA 12 — LUNES (ÚLTIMA JORNADA)
+══════════════════════════════════════ -->
+<section class="section" id="d12">
+<div class="container">
+
+  <div class="day-header day12" data-emoji="🌅">
+    <div class="day-date">Lunes 23 Junio · Último Día · Vuelo mañana 9:40 AM</div>
+    <div class="day-title">El Gran Finale:<br>Tesoros del Imperio</div>
+    <div class="day-meta">Elige tu aventura final: el palacio de los sultanes + el barrio más fotogénico, o una escapada mágica a las Islas de los Príncipes sin autos.</div>
+  </div>
+
+  <div class="closed-alert">
+    <div class="icon">⚠️</div>
+    <div>
+      <strong>Cerrado hoy lunes:</strong> Dolmabahçe ⛔ e Istanbul Modern ⛔<br>
+      <strong>Abierto hoy lunes:</strong> Topkapi ✅ · Cisterna ✅ · Balat ✅ · Islas ✅<br>
+      <strong>Topkapi SOLO cierra martes</strong> (mañana, cuando ya se han ido ✈️). Hoy es perfecto.
+    </div>
+  </div>
+
+  <!-- OPTION TOGGLE -->
+  <div class="option-toggle">
+    <button class="opt-btn active" onclick="showOpt('optA')" id="btnA">👑 Opción A<br><span style="font-size:10px;font-weight:400">Topkapi + Balat</span></button>
+    <button class="opt-btn" onclick="showOpt('optB')" id="btnB">⛴️ Opción B<br><span style="font-size:10px;font-weight:400">Islas Príncipes</span></button>
+  </div>
+
+  <!-- ── OPCIÓN A ── -->
+  <div class="option-content active" id="optA">
+    <div class="timeline">
+
+      <!-- TRANSPORT TO TOPKAPI -->
+      <div class="transport-strip">🚃 Tram T1 desde Aksaray/Laleli → bajar en <strong>Gülhane</strong> o <strong>Sultanahmet</strong> → caminar 10-15 min hasta la puerta Imperial del Palacio</div>
+
+      <!-- TOPKAPI -->
+      <div class="stop">
+        <div class="stop-top">
+          <div class="stop-title">👑 Palacio de Topkapi <em>— Casa de los Sultanes por 400 años</em></div>
+          <div class="time-pill">9:00 AM · 3.5-4 hrs</div>
+        </div>
+        <div class="badges">
+          <span class="badge paid">2.750 TRY (~€55)</span>
+          <span class="badge free">ABIERTO LUNES ✅</span>
+          <span class="badge closed">Cierra SOLO martes</span>
+        </div>
+        <p class="stop-desc">Durante 400 años (1461-1856), Topkapi fue el centro neurálgico del Imperio Otomano que controló desde el Mediterráneo hasta el Golfo Pérsico. Hoy es el museo más visitado de Turquía. Cuatro patios enormes con vistas al Bósforo, el Mar de Mármara y el Cuerno de Oro simultáneamente. Lo imprescindible: el <strong>Harem</strong> (incluido en el ticket), el <strong>Tesoro</strong> (la daga Topkapi, el diamante de 86 quilates, el trono de ébano), y la <strong>Sala de las Reliquias Sagradas</strong> con objetos del Profeta Muhammad.</p>
+        <div class="tip-box">
+          <div class="ti">⚡</div>
+          <div>LLEGA A LAS 9 AM EN PUNTO. Las colas son monstruosas desde las 10 AM. Compra online en <strong>topkapipalacemuseum.com</strong>. Reserva el audio guía (incluido en el precio, trae tus propios auriculares). El 4º Patio tiene las mejores vistas de Estambul.</div>
+        </div>
+        <div class="btns-row">
+          <a class="map-btn" href="https://maps.google.com/?cid=1561087999662445312" target="_blank">📍 Topkapi Palace</a>
+          <a class="map-btn green" href="https://topkapipalacemuseum.com" target="_blank">🎫 Tickets Online</a>
+        </div>
+      </div>
+
+      <!-- OPTIONAL CISTERNA IF NOT VISITED SAT -->
+      <div class="stop optional">
+        <div class="stop-top">
+          <div class="stop-title">✨ OPCIONAL: Cisterna Basílica <em>(si no fue el sábado)</em></div>
+          <div class="time-pill">12:30 PM · 45 min</div>
+        </div>
+        <div class="badges">
+          <span class="badge opt">Solo si no fue el Sáb</span>
+          <span class="badge paid">1.950 TRY (~€38)</span>
+          <span class="badge walk">5 min desde Topkapi</span>
+        </div>
+        <p class="stop-desc">Si no visitaron la Cisterna el sábado, este es el momento perfecto: está a 5 minutos caminando de Topkapi. Vale muchísimo la pena como contraste: el esplendor terrestre del palacio vs la magia subterránea de la cisterna.</p>
+        <div class="btns-row">
+          <a class="map-btn" href="https://maps.google.com/?cid=6971624870583829617" target="_blank">📍 Cisterna Basílica</a>
+        </div>
+      </div>
+
+      <!-- TRANSPORT TO BALAT -->
+      <div class="transport-strip">🚕 Taxi desde Sultanahmet a Balat ~100-150 TRY (15 min) o bus 99A (25 min) · Comer antes de ir</div>
+
+      <!-- BALAT -->
+      <div class="stop teal">
+        <div class="stop-top">
+          <div class="stop-title">🏘️ Barrio de Balat <em>— Las Calles de los Mil Colores</em></div>
+          <div class="time-pill">2:30 PM · 90 min</div>
+        </div>
+        <div class="badges">
+          <span class="badge free">GRATIS</span>
+          <span class="badge walk">Barrio histórico judío-griego</span>
+        </div>
+        <p class="stop-desc">El barrio más fotogénico de Estambul que pocos turistas conocen. Casas de madera otomanas del s. XIX pintadas en colores vivos — turquesa, rosa, amarillo ocre, verde esmeralda — apiladas en calles empedradas empinadas con gatos durmiendo en cada escalón. Fue el barrio judío más importante del Imperio Otomano y hoy conserva esa atmósfera única. Las calles <strong>Yıldırım Caddesi</strong> y <strong>Vodina Caddesi</strong> son las más icónicas.</p>
+        <div class="tip-box">
+          <div class="ti">📸</div>
+          <div>La mejor foto de todo el viaje puede estar aquí. Las casas de colores en <strong>Kürkçü Çeşmesi Sk.</strong> (buscar "Balat colorful houses" en Maps) y los escalones empinados con flores crean fondos absolutamente únicos. Los gatos son protagonistas garantizados.</div>
+        </div>
+        <div class="btns-row">
+          <a class="map-btn" href="https://maps.google.com/?cid=9899465368556430837" target="_blank">📍 Casas de Colores Balat</a>
+          <a class="map-btn" href="https://www.google.com/maps/dir/Topkapi+Palace+Museum/Balat+Istanbul" target="_blank">🗺️ Ruta Topkapi→Balat</a>
+        </div>
+      </div>
+
+      <!-- FENER PATRIARCHATE -->
+      <div class="stop">
+        <div class="stop-top">
+          <div class="stop-title">⛪ Patriarcado Ecuménico de Fener</div>
+          <div class="time-pill">4:00 PM · 30 min</div>
+        </div>
+        <div class="badges">
+          <span class="badge free">GRATIS · Abierto 8-16h</span>
+          <span class="badge walk">5 min de Balat</span>
+        </div>
+        <p class="stop-desc">La sede del Patriarca Ecuménico Ortodoxo — uno de los lugares más sagrados del mundo cristiano — escondida en el corazón de Fener. La Iglesia de San Jorge (s. XVII) guarda iconos y reliquias de valor incalculable. Es una visita muy especial: pequeña, íntima, con una espiritualidad palpable. Pocos turistas llegan hasta aquí.</p>
+        <div class="btns-row">
+          <a class="map-btn" href="https://maps.google.com/?cid=9608653543010332724" target="_blank">📍 Patriarcado de Fener</a>
+        </div>
+      </div>
+
+      <!-- REGRESO -->
+      <div class="transport-strip">🚕 Taxi desde Fener al hotel ~100-150 TRY (20 min) · Cena de despedida en el hotel o restaurante cercano</div>
+
+    </div>
+
+    <div class="cost-section">
+      <h3>💰 Presupuesto Día 12 — Opción A</h3>
+      <div class="cost-row"><span>Palacio Topkapi (x2)</span><span class="price-paid">5.500 TRY / ~€110</span></div>
+      <div class="cost-row"><span>Cisterna (si no fue sábado, x2)</span><span class="price-paid">3.900 TRY / ~€76</span></div>
+      <div class="cost-row"><span>Almuerzo + snacks</span><span class="price-paid">~600-1.000 TRY</span></div>
+      <div class="cost-row"><span>Taxis (x2 trayectos)</span><span class="price-paid">~250-350 TRY</span></div>
+      <div class="cost-row"><span>Balat + Fener (exploración)</span><span class="price-free">GRATIS</span></div>
+      <div class="cost-row"><span><strong>TOTAL (con Cisterna)</strong></span><span>~10.250 TRY / <strong>~€200</strong></span></div>
+    </div>
+
+  </div><!-- /optA -->
+
+  <!-- ── OPCIÓN B: ISLAS ── -->
+  <div class="option-content" id="optB">
+
+    <div class="islands-hero">
+      <h3>🏝️ Büyükada — La Gran Isla</h3>
+      <p>El último día sin autos en un mundo sin ruido. 90 minutos en ferry y llegas a un lugar donde el tiempo se ha detenido en el siglo XIX.</p>
+      <div class="ferry-info">
+        <div class="ferry-stat"><div class="val">90 min</div><div class="lbl">en ferry</div></div>
+        <div class="ferry-stat"><div class="val">~120 TRY</div><div class="lbl">ida + vuelta</div></div>
+        <div class="ferry-stat"><div class="val">0 autos</div><div class="lbl">Solo bicicletas</div></div>
+        <div class="ferry-stat"><div class="val">8 AM</div><div class="lbl">Primer ferry</div></div>
+      </div>
+    </div>
+
+    <div class="transport-strip">🚃 Tram T1 desde hotel (Aksaray) → parada <strong>Kabataş</strong> → caminata 3 min hasta el muelle de Adalar (Şehir Hatları) · Usa İstanbulkart</div>
+
+    <div class="stop">
+      <div class="stop-top">
+        <div class="stop-title">⛴️ Ferry Kabataş → Büyükada</div>
+        <div class="time-pill">8:00/9:00 AM · ~90 min</div>
+      </div>
+      <div class="badges">
+        <span class="badge paid">~59-120 TRY/persona ida · Mismo precio vuelta</span>
+        <span class="badge walk">Con İstanbulkart o efectivo en taquilla</span>
+      </div>
+      <p class="stop-desc">El ferry pasa primero por el lado asiático de Estambul (vistas únicas de la ciudad europea desde el mar), luego por la pequeña isla de Kınalıada, después Burgazada, Heybeliada, y finalmente <strong>Büyükada</strong>. El viaje en sí ya es espectacular.</p>
+      <div class="tip-box">
+        <div class="ti">⚠️</div>
+        <div>Llega al muelle de <strong>Şehir Hatları</strong> (el edificio oficial grande, no el pequeño con hombre con megáfono) al menos 20 min antes. En julio-agosto los ferries se llenan rápido. Verifica horario de regreso cuando llegues al muelle de la isla.</div>
+      </div>
+      <div class="btns-row">
+        <a class="map-btn" href="https://maps.google.com/?cid=4178650397054972761" target="_blank">📍 Muelle Kabataş-Adalar</a>
+        <a class="map-btn green" href="https://sehirhatlari.istanbul/en/timetables/domestic-trips/adalar-princes-islands-lines/kabatas-adalar-177" target="_blank">⏱️ Horarios Oficiales</a>
+      </div>
+    </div>
+
+    <div class="stop teal">
+      <div class="stop-top">
+        <div class="stop-title">🏝️ Büyükada — Día en la Isla</div>
+        <div class="time-pill">10:00 AM – 4:30 PM</div>
+      </div>
+      <div class="badges">
+        <span class="badge free">Exploración Libre</span>
+      </div>
+      <p class="stop-desc">La isla más grande de las Islas de los Príncipes, a 20 km de Estambul. Sin autos, solo bicicletas, coches de caballos y silencio. Mansiones victorianas de madera del siglo XIX, jardines con bougainvilleas, la bahía plateada y las gaviotas.</p>
+
+      <div class="activity-list">
+        <div class="activity">
+          <div class="emoji">🚲</div>
+          <div>
+            <h4>Alquiler de Bicicleta</h4>
+            <p>La mejor forma de explorar la isla. Varias tiendas en el muelle. Circuito completo: ~1.5 horas.</p>
+            <div class="price-tag paid">~100-200 TRY / hora</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="emoji">🐴</div>
+          <div>
+            <h4>Fayton (Coche de Caballos)</h4>
+            <p>Tour guiado por la isla en carruaje. Sale del muelle cada 15-20 min. Opción "grande" recorre toda la isla (~45 min).</p>
+            <div class="price-tag paid">~400-800 TRY / grupo</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="emoji">⛪</div>
+          <div>
+            <h4>Monasterio de San Jorge</h4>
+            <p>Subida a pie por el camino de los deseos (ata un trapo en los pinos al subir). Vista panorámica de las islas y Estambul desde la cima. ~40 min subida.</p>
+            <div class="price-tag free">GRATIS</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="emoji">🏖️</div>
+          <div>
+            <h4>Playa Pública</h4>
+            <p>Playa libre junto al muelle principal. Aguas limpias del Mar de Mármara. Perfecta para un baño o descanso.</p>
+            <div class="price-tag free">GRATIS</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="emoji">🦞</div>
+          <div>
+            <h4>Almuerzo de Mariscos</h4>
+            <p>Los restaurantes frente al mar de Büyükada tienen el mejor marisco fresco de Turquía a precios razonables. El pulpo asado y los langostinos son imprescindibles.</p>
+            <div class="price-tag paid">~400-800 TRY / persona</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <div class="ti">⏱️</div>
+        <div>Toma el ferry de regreso a más tardar a las 4:30-5:00 PM para llegar a Estambul ~6:30 PM. Es el último día y hay que preparar maletas + descansar para el vuelo de las 9:40 AM del martes. ¡Vale la pena pero no llegues muy tarde!</div>
+      </div>
+      <div class="btns-row">
+        <a class="map-btn" href="https://maps.google.com/?cid=ChIJo3rvAuzByhQRBJD4EB8adb8" target="_blank">📍 Büyükada Island</a>
+        <a class="map-btn" href="https://www.google.com/maps/place/B%C3%BCy%C3%BCkada/@40.8560399,29.1187097,14z" target="_blank">🗺️ Mapa de la Isla</a>
+      </div>
+    </div>
+
+    <div class="cost-section">
+      <h3>💰 Presupuesto Día 12 — Opción B</h3>
+      <div class="cost-row"><span>Ferry ida + vuelta (x2)</span><span class="price-paid">~240-480 TRY</span></div>
+      <div class="cost-row"><span>Bicicleta o Fayton (x2)</span><span class="price-paid">~400-1.200 TRY</span></div>
+      <div class="cost-row"><span>Almuerzo mariscos (x2)</span><span class="price-paid">~800-1.600 TRY</span></div>
+      <div class="cost-row"><span>Snacks y extras</span><span class="price-paid">~200-400 TRY</span></div>
+      <div class="cost-row"><span>Tranvía T1 hotel-Kabataş</span><span class="price-paid">~80 TRY</span></div>
+      <div class="cost-row"><span><strong>TOTAL ESTIMADO</strong></span><span>~1.720-3.760 TRY / <strong>~€33-73</strong></span></div>
+    </div>
+
+  </div><!-- /optB -->
+
+</div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TIPS SECTION
+══════════════════════════════════════ -->
+<section class="section" id="tips">
+<div class="container">
+
+  <div class="day-header" style="background:linear-gradient(135deg,#1A2B0A,#0C1A06);" data-emoji="🌿">
+    <div class="day-date">Consejos Esenciales · Siempre Útiles</div>
+    <div class="day-title">Lo que Necesitas<br>Saber Ahora</div>
+    <div class="day-meta">Resumen de transporte, dinero, seguridad y los detalles que marcan la diferencia.</div>
+  </div>
+
+  <!-- TRANSPORT GUIDE -->
+  <div class="stop">
+    <div class="stop-top"><div class="stop-title">🚃 Guía de Transporte</div></div>
+    <p class="stop-desc"><strong>T1 Tranvía:</strong> Tu línea principal. Va de Bağcılar hasta Kabataş. El hotel Ramada Old City está cerca de las paradas Aksaray o Laleli-Üniversite. Costo ~20-25 TRY con İstanbulkart.</p>
+    <p class="stop-desc" style="margin-top:8px;"><strong>F1 Funicular:</strong> Kabataş ↔ Taksim (3 min). Muy útil si quieren subir a la zona de Taksim.</p>
+    <p class="stop-desc" style="margin-top:8px;"><strong>Taxi:</strong> Insiste en que enciendan el taxímetro (<em>"taksi metre lütfen"</em>). Precio aproximado por km: ~20-30 TRY. Para trayectos de 3-5 km: ~100-200 TRY.</p>
+    <p class="stop-desc" style="margin-top:8px;"><strong>Bus:</strong> Usar el sistema İETT. Misma tarifa que tranvía con İstanbulkart. Más lento pero llega a más zonas.</p>
+    <div class="btns-row" style="margin-top:10px;">
+      <a class="map-btn" href="https://www.google.com/maps/dir/Ramada+by+Wyndham+Istanbul+Old+City/Sultanahmet+Istanbul" target="_blank">🗺️ Hotel→Sultanahmet</a>
+      <a class="map-btn" href="https://www.google.com/maps/dir/Ramada+by+Wyndham+Istanbul+Old+City/Kabatas+Istanbul" target="_blank">🗺️ Hotel→Kabataş</a>
+    </div>
+  </div>
+
+  <div class="tips-grid">
+    <div class="tip-card">
+      <h4>💱 Tipo de Cambio</h4>
+      <p>1 USD ≈ 34 TRY<br>1 EUR ≈ 37 TRY<br>Usa cajeros ATM locales, no cambio en aeropuerto.</p>
+    </div>
+    <div class="tip-card">
+      <h4>💳 Pagos</h4>
+      <p>Cisterna: Solo tarjeta o İstanbulkart (no efectivo). Taxis y comida callejera: efectivo preferible.</p>
+    </div>
+    <div class="tip-card">
+      <h4>⏰ Llegada Temprana</h4>
+      <p>Topkapi y Dolmabahçe: a las 9 AM exactas. Los grupos turísticos llegan a las 10 AM. La diferencia de 1 hora es enorme.</p>
+    </div>
+    <div class="tip-card">
+      <h4>🌡️ Clima Junio</h4>
+      <p>25-30°C, sol fuerte. Protector solar FPS 50+, sombrero, agua constante. La caminata a Ortaköy expone mucho al sol.</p>
+    </div>
+    <div class="tip-card">
+      <h4>📵 Internet</h4>
+      <p>La eSIM limitada del paquete puede alcanzar. Pide WiFi del hotel si se acaba. Descarga Maps offline de la zona Bósforo.</p>
+    </div>
+    <div class="tip-card">
+      <h4>🛡️ Seguridad</h4>
+      <p>Los barrios de este itinerario (Sultanahmet, Ortaköy, Balat, Beşiktaş) son muy seguros para turistas. Cuidado normal de bolsos.</p>
+    </div>
+  </div>
+
+  <!-- DIAS CERRADO SUMMARY -->
+  <div class="stop" style="margin-top:20px;">
+    <div class="stop-top"><div class="stop-title">📋 Qué Cierra Cuándo — Resumen Rápido</div></div>
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px;">
+      <tr style="background:var(--navy);color:#fff;">
+        <th style="padding:8px;text-align:left;border-radius:6px 0 0 0;">Lugar</th>
+        <th style="padding:8px;text-align:center;">Sáb 21</th>
+        <th style="padding:8px;text-align:center;">Dom 22</th>
+        <th style="padding:8px;text-align:center;">Lun 23</th>
+        <th style="padding:8px;text-align:center;border-radius:0 6px 0 0;">Mar 24</th>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:8px;font-weight:600;">Topkapi Palace</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+        <td style="text-align:center;color:var(--paid);">❌</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border);background:#FAF6EE;">
+        <td style="padding:8px;font-weight:600;">Dolmabahçe Palace</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+        <td style="text-align:center;color:var(--paid);">❌</td>
+        <td style="text-align:center;color:var(--paid);">❌</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:8px;font-weight:600;">Cisterna Basílica</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border);background:#FAF6EE;">
+        <td style="padding:8px;font-weight:600;">Istanbul Modern</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+        <td style="text-align:center;color:var(--paid);">❌</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+      </tr>
+      <tr>
+        <td style="padding:8px;font-weight:600;">Islas / Balat / Ortaköy</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+        <td style="text-align:center;color:var(--free);">✅</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- FAREWELL -->
+  <div class="farewell">
+    <h2>Un viaje que nunca olvidarán 🌙</h2>
+    <p>Cada rincón de Estambul esconde una historia de 2.700 años. Caminen despacio, tomen mucho çay, hablen con la gente, y dejen que la ciudad los sorprenda. El mejor souvenir que se llevarán de Turquía no tiene precio: los recuerdos que hicieron juntos. 🇨🇴❤️🇹🇷</p>
+  </div>
+
+</div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>Estambul · Días 10, 11, 12 · Akira Travel · Junio 2026</strong><br>
+  Diseñado con ❤️ para su viaje "Esplendores de Turquía" · Guía no oficial de uso personal
+</div>
+
+<script>
+/* ── STAR FIELD ── */
+(function(){
+  const wrap = document.getElementById('stars');
+  for(let i=0;i<18;i++){
+    const s = document.createElement('div');
+    s.className='star';
+    const size = Math.random()*3+1;
+    s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*3}s;animation-duration:${2+Math.random()*3}s`;
+    wrap.appendChild(s);
+  }
+})();
+
+/* ── TABS ── */
+function showTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const tabs = document.querySelectorAll('.tab');
+  const map = {d10:0,d11:1,d12:2,tips:3};
+  tabs[map[id]].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── OPTION TOGGLE (Day 12) ── */
+function showOpt(id){
+  document.querySelectorAll('.option-content').forEach(o=>o.classList.remove('active'));
+  document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById(id==='optA'?'btnA':'btnB').classList.add('active');
+}
+</script>
+</body>
+</html>
